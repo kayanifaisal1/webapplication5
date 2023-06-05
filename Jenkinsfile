@@ -1,31 +1,36 @@
 pipeline {
     agent any
-
+    
+    environment {
+        MSBUILD_PATH = tool 'MSBuild'
+        PUBLISH_DIR = "C:\\inetpub\\wwwroot"
+    }
+    
     stages {
         stage('Source') {
             steps {
-                // Checkout the code from the local directory
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'file:///C:/Users/faisal.kayani/Desktop/New folder (3)']]])
+                script {
+                    // Set system property to allow local checkouts
+                    System.setProperty('hudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT', 'true')
+                }
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'file:///C:/Users/faisal.kayani/Desktop/New folder (4)/webapplication5']]])
             }
         }
-
+        
         stage('Build') {
             steps {
-                // Build the .NET project
-                bat "\"${tool 'MSBuild'}\" my_app.sln /p:Configuration=Release"
+                bat "\"${MSBUILD_PATH}\" my_app.sln /p:Configuration=Release /t:build"
             }
         }
-
+        
         stage('Publish') {
             steps {
-                // Publish the website to a directory
-                bat "\"${tool 'MSBuild'}\" my_app.sln /p:Configuration=Release /t:WebPublish /p:PublishUrl=C:\\\\inetpub\\\\wwwroot"
+                bat "\"${MSBUILD_PATH}\" my_app.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=\"${PUBLISH_DIR}\""
             }
         }
-
+        
         stage('Deploy') {
             steps {
-                // Restart IIS to deploy the updated website
                 bat 'iisreset'
             }
         }

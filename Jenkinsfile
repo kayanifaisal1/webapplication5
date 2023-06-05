@@ -1,16 +1,33 @@
-//def ReleaseDir = "c:\inetpub\wwwroot"
 pipeline {
-			agent any
-			stages {
-				stage('Source'){
-					steps{
-						checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf', url: 'https://github.com/kayanifaisal1/webapplication5.git']]])
-					}
-				}
-				stage('Build') {
-    					steps {
-    					    bat "\"${tool 'MSBuild'}\" my_app.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /t:build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:DeleteExistingFiles=True /p:publishUrl=c:\\inetpub\\wwwroot"
-    					}
-				}
-			}
+    agent any
+
+    stages {
+        stage('Source') {
+            steps {
+                // Checkout the code from your Git repository
+                git url: 'https://github.com/kayanifaisal1/webapplication5.git', credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your .NET project using MSBuild
+                bat "\"${tool 'MSBuild'}\" your_project.sln /p:Configuration=Release /t:build"
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                // Publish the website to a directory
+                bat "\"${tool 'MSBuild'}\" your_project.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Restart IIS to deploy the updated website
+                bat 'iisreset'
+            }
+        }
+    }
 }

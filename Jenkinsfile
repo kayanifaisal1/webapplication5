@@ -1,4 +1,4 @@
--D"hudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true"
+System.setProperty('hudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT', 'true')
 pipeline {
     agent any
 

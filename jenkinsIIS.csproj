@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <Target Name="WebPublish" AfterTargets="Build">
+  <Target Name="WebPublish">
     <Exec Command="dotnet publish -c Release -o C:\inetpub\wwwroot" />
   </Target>
 

@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <Target Name="WebPublish" AfterTargets="Build">
-    <Exec Command="dotnet publish -c Release -o C:\inetpub\wwwroot" />
+    <ItemGroup>
+      <PublishProjects Include="**/*.csproj" />
+    </ItemGroup>
+    <Exec Command="dotnet publish @(PublishProjects) -c Release -o C:\inetpub\wwwroot" />
   </Target>
 
 </Project>

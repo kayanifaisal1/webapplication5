@@ -5,28 +5,42 @@ pipeline {
         stage('Source') {
             steps {
                 // Checkout the code from your Git repository
-                git url: 'https://github.com/kayanifaisal1/webapplication5.git', credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf'
+                git 'https://github.com/kayanifaisal1/webapplication5.git'
+            }
+        }
+
+        stage('Restore') {
+            steps {
+                // Restore NuGet packages
+                bat 'dotnet restore'
             }
         }
 
         stage('Build') {
             steps {
-                // Build your .NET project using MSBuild
-                bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:Configuration=Release /t:build"
+                // Build your .NET project
+                bat 'dotnet build --configuration Release --no-restore'
             }
         }
 
         stage('Publish') {
             steps {
-                // Publish the website to a directory
-                bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
+                // Publish each project to its own directory
+                bat 'dotnet publish --configuration Release --no-build'
             }
         }
 
         stage('Deploy') {
             steps {
-                // Restart IIS to deploy the updated website
-                bat 'iisreset'
+                // Copy published files to the desired location
+                bat 'xcopy /E /I /Y .\\**\\bin\\Release\\net6.0\\publish\\* C:\\inetpub\\wwwroot'
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                // Clean up the workspace
+                bat 'dotnet clean'
             }
         }
     }

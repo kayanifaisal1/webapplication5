@@ -12,14 +12,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Build your .NET project using MSBuild
-                bat "\"${tool 'MSBuild'}\" your_project.sln /p:Configuration=Release /t:build"
+                bat "\"${tool 'MSBuild'}\" my_app.sln /p:Configuration=Release /t:build"
             }
         }
 
         stage('Publish') {
             steps {
                 // Publish the website to a directory
-                bat "\"${tool 'MSBuild'}\" your_project.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
+                bat "\"${tool 'MSBuild'}\" my_app.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
             }
         }
 

@@ -5,7 +5,7 @@ pipeline {
         stage('Source') {
             steps {
                 // Checkout the code from your Git repository
-                git 'https://github.com/kayanifaisal1/webapplication5.git'
+                git url: 'https://github.com/kayanifaisal1/webapplication5.git', credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf'
             }
         }
 

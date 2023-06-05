@@ -5,21 +5,21 @@ pipeline {
         stage('Source') {
             steps {
                 // Checkout the code from your Git repository
-                git url: 'https://github.com/kayanifaisal1/webapplication5.git', credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf'
+                git 'https://github.com/kayanifaisal1/webapplication5.git'
             }
         }
 
         stage('Build') {
             steps {
                 // Build your .NET project using MSBuild
-                bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:Configuration=Release /t:build"
+                bat "\"${tool 'MSBuild'}\" jenkinsIIS.csproj /p:Configuration=Release /t:build"
             }
         }
 
         stage('Publish') {
             steps {
                 // Publish the website to a directory
-                bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
+                bat "\"${tool 'MSBuild'}\" jenkinsIIS.csproj /p:Configuration=Release /t:WebPublish /p:WebPublishMethod=FileSystem /p:PublishUrl=C:\\inetpub\\wwwroot"
             }
         }
 

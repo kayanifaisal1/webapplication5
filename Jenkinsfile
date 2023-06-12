@@ -19,9 +19,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def sourceDir = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\WebAppIIS\\bin\\Release\\net6.0"
-                    def targetDir = "c:\\Faisalkayani\\wwwroot"
-                    bat "robocopy \"${sourceDir}\" \"${targetDir}\" /MIR"
+                    // Stop IIS service
+                    bat 'iisreset /stop'
+                    // Deploy the application
+                    bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /p:DeleteExistingFiles=False /p:publishUrl=c:\\Faisalkayani\\wwwroot"
+                    // Start IIS service
+                    bat 'iisreset /start'
                 }
             }
         }

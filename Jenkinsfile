@@ -1,4 +1,4 @@
-//def ReleaseDir = "c:\inetpub\wwwroot"
+//def ReleaseDir = "c:\Faisalkayani\wwwroot"
 pipeline {
 			agent any
 			stages {
@@ -9,7 +9,7 @@ pipeline {
 				}
 				stage('Build/Deploy') {
     					steps {
-    					    bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /t:build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:DeleteExistingFiles=True /p:publishUrl=c:\\inetpub\\wwwroot"
+    					    bat "\"${tool 'MSBuild'}\" jenkinsIIS.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /t:build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:DeleteExistingFiles=True /p:publishUrl=c:\\Faisalkayani\\wwwroot"
     					}
 				}
 			}

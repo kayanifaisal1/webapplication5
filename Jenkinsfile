@@ -19,12 +19,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def sourceDir = "jenkinsIIS\\bin\\Release\\net5.0\\publish"
+                    def workspaceDir = pwd()
                     def targetDir = "c:\\Faisalkayani\\wwwroot"
-                    bat "robocopy \"${sourceDir}\" \"${targetDir}\" /MIR"
+                    bat "robocopy \"${workspaceDir}\" \"${targetDir}\" /E"
                 }
             }
         }
     }
 }
-S

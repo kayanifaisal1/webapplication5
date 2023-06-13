@@ -32,9 +32,9 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t myapp .'
+                    sh 'docker build -t jenkinsIIS .'
                     // Run the Docker container
-                    sh 'docker run -d -p 8080:80 myapp'
+                    sh 'docker run -d -p 8080:80 jenkinsIIS'
                 }
             }
         }

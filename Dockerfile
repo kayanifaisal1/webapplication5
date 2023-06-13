@@ -1,11 +1,14 @@
-# Use a base image
-FROM nginx:latest
+# syntax=docker/dockerfile:1
 
-# Copy the built application to the NGINX web root directory
-COPY c:/Faisalkayani/wwwroot /usr/share/nginx/html
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build-env
+WORKDIR /my_app
+COPY my_app/*.csproj .
+RUN dotnet restore
+COPY my_app .
+RUN dotnet publish -c Release -o /publish
 
-# Expose port 80 for web traffic
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 as runtime
+WORKDIR /publish
+COPY --from=build-env /publish .
 EXPOSE 80
-
-# Start NGINX when the container is run
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["dotnet", "jenkinsIIS.dll"]

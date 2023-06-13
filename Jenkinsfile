@@ -28,5 +28,15 @@ pipeline {
                 }
             }
         }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh 'docker build -t myapp .'
+                    // Run the Docker container
+                    sh 'docker run -d -p 8080:80 myapp'
+                }
+            }
+        }
     }
 }

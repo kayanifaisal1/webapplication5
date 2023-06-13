@@ -28,13 +28,19 @@ pipeline {
                 }
             }
         }
-        stage('Run Docker Container') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t jenkinsIIS .'
+                    sh 'docker build -t jenkinsIIS -f Dockerfile .'
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
                     // Run the Docker container
-                    sh 'docker run -d -p 8080:80 jenkinsIIS'
+                    sh 'docker run -d -p 8080:80 --name my-app jenkinsIIS'
                 }
             }
         }

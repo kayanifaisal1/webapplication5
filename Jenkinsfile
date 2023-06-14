@@ -6,7 +6,7 @@ pipeline {
                 script {
                     git branch: '*/master',
                         credentialsId: 'e71b31bd-cc1f-4189-8294-abae520699bf',
-                        url: 'http://github.com/kayanifaisal1/webapplication5.git',
+                        url: 'https://github.com/kayanifaisal1/webapplication5.git',
                         extensions: [[$class: 'GitSCMExtension', disableSubmodules: true, submoduleCfg: []]],
                         configName: 'schannel'
                 }

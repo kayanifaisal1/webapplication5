@@ -19,9 +19,8 @@ pipeline {
 
         stage('Approval') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    input message: 'Deploy approval', ok: 'Deploy'
-                }
+                
+                input message: 'Deploy approval', ok: 'Deploy'
             }
         }
 
